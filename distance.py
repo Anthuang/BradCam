@@ -29,20 +29,27 @@ try:
 
     GPIO.output(PIN_TRIGGER, False)
 
-    pulse_start_time = time.time()
-    pulse_end_time = time.time()
-
-    while GPIO.input(PIN_ECHO) == 0:
+    while True:
         pulse_start_time = time.time()
-    while GPIO.input(PIN_ECHO) == 1:
         pulse_end_time = time.time()
 
-    pulse_duration = pulse_end_time - pulse_start_time
+        while GPIO.input(PIN_ECHO) == 0:
+            pulse_start_time = time.time()
+        while GPIO.input(PIN_ECHO) == 1:
+            pulse_end_time = time.time()
 
-    distance = pulse_duration * 34300 / 2
+        pulse_duration = pulse_end_time - pulse_start_time
 
-    print("Distance:", distance, "cm")
-    exit(0)
+        distance = pulse_duration * 34300 / 2
+
+        if distance <= 50:
+            print("BEEP BEEP BEEP")
+        elif distance <= 100:
+            print("BEEP BEEP")
+        elif distance <= 200:
+            print("BEEP")
+
+        time.sleep(0.1)
 
 finally:
     GPIO.cleanup()
