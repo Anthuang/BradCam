@@ -1,7 +1,3 @@
-# Web streaming example
-# Source code from the official PiCamera package
-# http://picamera.readthedocs.io/en/latest/recipes2.html#web-streaming
-
 import io
 import picamera
 import logging
@@ -9,16 +5,9 @@ import socketserver
 from threading import Condition
 from http import server
 
-PAGE = """\
-<html>
-<head>
-<title>Raspberry Pi - Surveillance Camera</title>
-</head>
-<body style="margin: 0; overflow: hidden">
-<center><img src="stream.mjpg" width="800" height="480"></center>
-</body>
-</html>
-"""
+
+with open('camera.html') as camera_file:
+    PAGE = camera_file.read()
 
 
 class StreamingOutput(object):

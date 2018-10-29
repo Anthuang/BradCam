@@ -1,55 +1,65 @@
-# Libraries
 import RPi.GPIO as GPIO
 import time
 
 
-try:
-    # GPIO Mode
-    GPIO.setmode(GPIO.BOARD)
+class DistanceSensor:
+    def __init__(self):
+        # GPIO Mode
+        GPIO.setmode(GPIO.BOARD)
 
-    # set GPIO Pins
-    PIN_TRIGGER = 5
-    PIN_ECHO = 3
+        # Set GPIO Pins
+        self.PIN_TRIGGER = 5
+        self.PIN_ECHO = 3
 
-    # set GPIO direction (IN / OUT)
-    GPIO.setup(PIN_TRIGGER, GPIO.OUT)
-    GPIO.setup(PIN_ECHO, GPIO.IN)
+        # Set GPIO direction (IN / OUT)
+        GPIO.setup(self.PIN_TRIGGER, GPIO.OUT)
+        GPIO.setup(self.PIN_ECHO, GPIO.IN)
 
-    GPIO.output(PIN_TRIGGER, GPIO.LOW)
+        GPIO.output(self.PIN_TRIGGER, GPIO.LOW)
 
-    print("Waiting for sensor to settle")
+        time.sleep(2)
 
-    time.sleep(2)
+        GPIO.output(self.PIN_TRIGGER, True)
 
-    print("Calculating distance")
+        time.sleep(0.00001)
 
-    GPIO.output(PIN_TRIGGER, True)
+        GPIO.output(self.PIN_TRIGGER, False)
 
-    time.sleep(0.00001)
-
-    GPIO.output(PIN_TRIGGER, False)
-
-    while True:
-        pulse_start_time = time.time()
-        pulse_end_time = time.time()
-
-        while GPIO.input(PIN_ECHO) == 0:
+    def run(self):
+        while True:
             pulse_start_time = time.time()
-        while GPIO.input(PIN_ECHO) == 1:
             pulse_end_time = time.time()
 
-        pulse_duration = pulse_end_time - pulse_start_time
+            while GPIO.input(self.PIN_ECHO) == 0:
+                pulse_start_time = time.time()
+            while GPIO.input(self.PIN_ECHO) == 1:
+                pulse_end_time = time.time()
 
-        distance = pulse_duration * 34300 / 2
+            pulse_duration = pulse_end_time - pulse_start_time
 
-        if distance <= 50:
-            print("BEEP BEEP BEEP")
-        elif distance <= 100:
-            print("BEEP BEEP")
-        elif distance <= 200:
-            print("BEEP")
+            distance = pulse_duration * 34300 / 2
 
-        time.sleep(0.1)
+            if distance <= 50:
+                print("BEEP BEEP BEEP")
+            elif distance <= 100:
+                print("BEEP BEEP")
+            elif distance <= 200:
+                print("BEEP")
 
-finally:
-    GPIO.cleanup()
+            time.sleep(0.1)
+
+    def cleanup(self):
+        GPIO.cleanup()
+
+
+def main():
+    distance_sensor = DistanceSensor()
+
+    try:
+        distance_sensor.run()
+    finally:
+        distance_sensor.cleanup()
+
+
+if __name__ == '__main__':
+    main()
