@@ -3,6 +3,38 @@
   <title>Raspberry Pi - Surveillance Camera</title>
 </head>
 <body style="margin: 0; overflow: hidden">
-  <center><img src="stream.mjpg" width="800" height="480"></center>
+  <script>
+    function toggleBeeperFunction() {
+      var beeperButton = document.getElementById("beeperToggle");
+
+      if (beeperButton.innerHTML === "Beeper on") {
+        beeperButton.innerHTML = "Beeper off";
+        beeperButton.style.backgroundColor = "#D3D3D3";
+      }
+      else{
+        beeperButton.innerHTML = "Beeper on";
+        beeperButton.style.backgroundColor = "#00FF00";
+      }
+    }
+
+    function startCameraFunction() {
+      var streamCamera = "<center><img src=\"stream.mjpg\" width=\"800\" height=\"480\"></center>";
+      document.body.innerHTML = streamCamera;
+    }
+  </script>
+
+  <br>
+  <h2 align="center">Toggle beeper on or off, then press "Start Camera"</h2>
+  <br>
+  <div align="center">
+    <button id="beeperToggle" style="background-color: #00FF00; font-size: 35px; padding: 15px 15px;" onclick="toggleBeeperFunction()" >Beeper on</button>
+  </div>
+  <br>
+  <br>
+  <br>
+  <div align="center">
+    <!-- <button onclick="startCameraFunction()" >Start Camera</button> -->
+    <button style="font-size: 35px; padding: 15px 15px;" onclick="startCameraFunction()">Start Camera</button>
+  </div>
 </body>
 </html>
