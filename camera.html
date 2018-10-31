@@ -2,41 +2,68 @@
 
 <head>
   <title>Raspberry Pi - Surveillance Camera</title>
+  <style>
+    h2 {
+      margin: 30px 0;
+    }
+
+    button {
+      display: block;
+      margin: 30px 0;
+      outline: none;
+    }
+
+    #beeper-toggle {
+      background-color: #0f0;
+      font-size: 35px;
+      padding: 15px 15px;
+    }
+
+    #start-toggle {
+      font-size: 35px;
+      padding: 15px 15px;
+    }
+
+    #camera-wrap {
+      display: none;
+    }
+  </style>
 </head>
 
 <body style="margin: 0; overflow: hidden">
   <script>
     function toggleBeeperFunction() {
-      var beeperButton = document.getElementById("beeperToggle");
+      var beeperButton = document.querySelector("#beeper-toggle");
 
       if (beeperButton.innerHTML === "Beeper on") {
         beeperButton.innerHTML = "Beeper off";
-        beeperButton.style.backgroundColor = "#ff0000";
+        beeperButton.style.backgroundColor = "#f00";
       } else {
         beeperButton.innerHTML = "Beeper on";
-        beeperButton.style.backgroundColor = "#00FF00";
+        beeperButton.style.backgroundColor = "#0f0";
       }
     }
 
     function startCameraFunction() {
-      var streamCamera = "<center><img src=\"stream.mjpg\" width=\"800\" height=\"480\"></center>";
-      document.body.innerHTML = streamCamera;
+      document.querySelector("#camera-wrap").style.display = "block";
+      document.querySelector("#toggle-wrap").style.display = "none";
+
+      setTimeout(function() {
+        document.querySelector("#camera-wrap").style.display = "none";
+        document.querySelector("#toggle-wrap").style.display = "block";
+      }, 5000);
     }
   </script>
 
-  <br>
-  <h2 align="center">Toggle beeper on or off, then press "Start Camera"</h2>
-  <br>
   <div align="center">
-    <button id="beeperToggle" style="background-color: #00FF00; font-size: 35px;
-      padding: 15px 15px;" onclick="toggleBeeperFunction()">Beeper on</button>
-  </div>
-  <br>
-  <br>
-  <br>
-  <div align="center">
-    <!-- <button onclick="startCameraFunction()" >Start Camera</button> -->
-    <button style="font-size: 35px; padding: 15px 15px;" onclick="startCameraFunction()">Start Camera</button>
+    <div id="toggle-wrap">
+      <h2 align="center">Toggle beeper on or off, then press "Start Camera"</h2>
+      <button id="beeper-toggle" onclick="toggleBeeperFunction()">Beeper on</button>
+      <button id="start-toggle" onclick="startCameraFunction()">Start Camera</button>
+    </div>
+    <div id="camera-wrap">
+      <center><img src="stream.mjpg" width="800" height="480"/></center>
+    </div>
   </div>
 </body>
 
