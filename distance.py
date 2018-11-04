@@ -1,9 +1,12 @@
 import RPi.GPIO as GPIO
 import time
+import threading
 
 
 class DistanceSensor:
     def __init__(self):
+        self.paused = False
+
         # GPIO Mode
         GPIO.setmode(GPIO.BOARD)
 
@@ -25,8 +28,21 @@ class DistanceSensor:
 
         GPIO.output(self.PIN_TRIGGER, False)
 
+        print("Done setting up")
+
+    def start(self):
+        self.paused = False
+
+        run_thread = threading.Thread(target=self.run)
+        run_thread.start()
+
     def run(self):
+        print("Sensor running")
         while True:
+            if self.paused:
+                print("Sensor paused")
+                return
+
             pulse_start_time = time.time()
             pulse_end_time = time.time()
 
@@ -48,7 +64,10 @@ class DistanceSensor:
 
             time.sleep(0.1)
 
-    def cleanup(self):
+    def pause(self):
+        self.paused = True
+
+    def stop(self):
         GPIO.cleanup()
 
 
@@ -58,7 +77,7 @@ def main():
     try:
         distance_sensor.run()
     finally:
-        distance_sensor.cleanup()
+        distance_sensor.stop()
 
 
 if __name__ == '__main__':

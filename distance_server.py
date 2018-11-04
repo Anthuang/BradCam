@@ -1,0 +1,38 @@
+import distance
+import io
+import logging
+import socketserver
+from threading import Condition, Thread
+from http import server
+
+distance_sensor = distance.DistanceSensor()
+
+
+class StreamingHandler(server.BaseHTTPRequestHandler):
+    def do_GET(self):
+        if self.path == '/buzzeron':
+            distance_sensor.start()
+            self.send_response(200)
+            self.end_headers()
+        elif self.path == '/buzzeroff':
+            distance_sensor.pause()
+            self.send_response(200)
+            self.end_headers()
+        else:
+            self.send_error(404)
+            self.end_headers()
+
+
+class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
+    allow_reuse_address = True
+    daemon_threads = True
+
+
+def main():
+    address = ('', 8001)
+    server = StreamingServer(address, StreamingHandler)
+    server.serve_forever()
+
+
+if __name__ == '__main__':
+    main()
