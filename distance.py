@@ -17,18 +17,18 @@ class DistanceSensor:
         # Set GPIO direction (IN / OUT)
         GPIO.setup(self.PIN_TRIGGER, GPIO.OUT)
         GPIO.setup(self.PIN_ECHO, GPIO.IN)
+        print("Done setting up")
 
+    def triggerSensor(self):
         GPIO.output(self.PIN_TRIGGER, GPIO.LOW)
 
-        time.sleep(2)
+        time.sleep(0.001)
 
         GPIO.output(self.PIN_TRIGGER, True)
 
         time.sleep(0.00001)
 
         GPIO.output(self.PIN_TRIGGER, False)
-
-        print("Done setting up")
 
     def start(self):
         self.paused = False
@@ -45,7 +45,7 @@ class DistanceSensor:
 
             pulse_start_time = time.time()
             pulse_end_time = time.time()
-
+            self.triggerSensor()
             while GPIO.input(self.PIN_ECHO) == 0:
                 pulse_start_time = time.time()
             while GPIO.input(self.PIN_ECHO) == 1:
