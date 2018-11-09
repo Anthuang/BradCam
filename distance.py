@@ -23,11 +23,8 @@ class DistanceSensor:
         GPIO.output(self.PIN_TRIGGER, GPIO.LOW)
 
         time.sleep(0.001)
-
         GPIO.output(self.PIN_TRIGGER, True)
-
         time.sleep(0.00001)
-
         GPIO.output(self.PIN_TRIGGER, False)
 
     def start(self):
