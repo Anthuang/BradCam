@@ -35,7 +35,7 @@
 
 <body style="margin: 0; overflow: hidden">
   <script>
-    function toggleBeeperFunction() {
+    function toggleBeeper() {
       var beeperButton = document.querySelector("#beeper-toggle");
 
       if (beeperButton.innerHTML === "Beeper on") {
@@ -47,7 +47,15 @@
       }
     }
 
-    function startCameraFunction() {
+    function resetCamera() {
+      document.querySelector("#camera-wrap").style.display = "none";
+      document.querySelector("#toggle-wrap").style.display = "block";
+      var req = new XMLHttpRequest();
+      req.open("GET", "http://localhost:8001/off");
+      req.send();
+    }
+
+    function startCamera() {
       document.querySelector("#camera-wrap").style.display = "block";
       document.querySelector("#toggle-wrap").style.display = "none";
 
@@ -70,10 +78,10 @@
   <div align="center">
     <div id="toggle-wrap">
       <h2 align="center">Toggle beeper on or off, then press "Start Camera"</h2>
-      <button id="beeper-toggle" onclick="toggleBeeperFunction()">Beeper on</button>
-      <button id="start-toggle" onclick="startCameraFunction()">Start Camera</button>
+      <button id="beeper-toggle" onclick="toggleBeeper()">Beeper on</button>
+      <button id="start-toggle" onclick="startCamera()">Start Camera</button>
     </div>
-    <div id="camera-wrap">
+    <div id="camera-wrap" onclick="resetCamera()">
       <center><img src="stream.mjpg" width="800" height="480"/></center>
     </div>
   </div>
