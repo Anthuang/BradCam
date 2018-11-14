@@ -6,10 +6,6 @@ from threading import Condition
 from http import server
 
 
-with open('camera.html') as camera_file:
-    PAGE = camera_file.read()
-
-
 class StreamingOutput(object):
     def __init__(self):
         self.frame = None
@@ -35,6 +31,8 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             self.send_header('Location', '/index.html')
             self.end_headers()
         elif self.path == '/index.html':
+            with open('camera.html') as camera_file:
+                PAGE = camera_file.read()
             content = PAGE.encode('utf-8')
             self.send_response(200)
             self.send_header('Content-Type', 'text/html')
