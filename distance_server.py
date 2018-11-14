@@ -14,8 +14,12 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             distance_sensor.start()
             self.send_response(200)
             self.end_headers()
-        elif self.path == '/off':
+        elif self.path == '/pause':
             distance_sensor.pause()
+            self.send_response(200)
+            self.end_headers()
+        elif self.path == '/off':
+            distance_sensor.stop()
             self.send_response(200)
             self.end_headers()
         else:
