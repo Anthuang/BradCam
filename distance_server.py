@@ -14,12 +14,8 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             distance_sensor.start()
             self.send_response(200)
             self.end_headers()
-        elif self.path == '/pause':
-            distance_sensor.pause()
-            self.send_response(200)
-            self.end_headers()
         elif self.path == '/off':
-            distance_sensor.stop()
+            distance_sensor.pause()
             self.send_response(200)
             self.end_headers()
         else:
@@ -33,9 +29,12 @@ class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
 
 
 def main():
-    address = ('', 8001)
-    server = StreamingServer(address, StreamingHandler)
-    server.serve_forever()
+    try:
+        address = ('', 8001)
+        server = StreamingServer(address, StreamingHandler)
+        server.serve_forever()
+    finally:
+        distance_sensor.stop()
 
 
 if __name__ == '__main__':
