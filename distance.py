@@ -7,6 +7,7 @@ class DistanceSensor:
     def __init__(self):
         self.beeping = False
         self.paused = False
+        self.running = False
 
         # GPIO Mode
         GPIO.setmode(GPIO.BOARD)
@@ -51,9 +52,12 @@ class DistanceSensor:
 
     def run(self):
         print("Sensor running")
+        self.running = True
+
         while True:
             if self.paused:
                 print("Sensor paused")
+                self.running = False
                 return
 
             pulse_start_time = time.time()
@@ -78,7 +82,9 @@ class DistanceSensor:
             time.sleep(0.1)
 
     def pause(self):
-        self.paused = True
+        if self.running:
+            print("Sensor pausing")
+            self.paused = True
 
     def stop(self):
         GPIO.cleanup()

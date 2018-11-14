@@ -55,6 +55,15 @@
         document.querySelector("#camera-wrap").style.display = "none";
         document.querySelector("#toggle-wrap").style.display = "block";
       }, 120000);
+
+      var req = new XMLHttpRequest();
+      if (document.querySelector("#beeper-toggle").innerHTML === "Beeper on") {
+        req.open("GET", "http://localhost:8001/on");
+        req.send();
+      } else {
+        req.open("GET", "http://localhost:8001/off");
+        req.send();
+      }
     }
   </script>
 
