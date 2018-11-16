@@ -40,8 +40,9 @@ class DistanceSensor:
             self.beeping = True
             for _ in range(3):
                 GPIO.output(self.PIN_LED, GPIO.HIGH)
-                time.sleep(delay)
+                time.sleep(0.1)
                 GPIO.output(self.PIN_LED, GPIO.LOW)
+                time.sleep(delay)
         self.beeping = False
 
     def start(self):
@@ -73,13 +74,14 @@ class DistanceSensor:
             distance = pulse_duration * 34300 / 2
 
             if distance <= 50:
+                print("Within 50")
                 self.beep(0.01)
             elif distance <= 100:
+                print("Within 100")
                 self.beep(0.1)
             elif distance <= 200:
+                print("Within 200")
                 self.beep(0.25)
-
-            time.sleep(0.1)
 
     def pause(self):
         if self.running:

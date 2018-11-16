@@ -60,8 +60,7 @@
       document.querySelector("#toggle-wrap").style.display = "none";
 
       setTimeout(function() {
-        document.querySelector("#camera-wrap").style.display = "none";
-        document.querySelector("#toggle-wrap").style.display = "block";
+        resetCamera();
       }, 120000);
 
       var req = new XMLHttpRequest();
