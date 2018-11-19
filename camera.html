@@ -35,6 +35,8 @@
 
 <body style="margin: 0; overflow: hidden">
   <script>
+    var timeout = null;
+
     function toggleBeeper() {
       var beeperButton = document.querySelector("#beeper-toggle");
 
@@ -48,6 +50,7 @@
     }
 
     function resetCamera() {
+      clearTimeout(timeout);
       document.querySelector("#camera-wrap").style.display = "none";
       document.querySelector("#toggle-wrap").style.display = "block";
       var req = new XMLHttpRequest();
@@ -59,7 +62,7 @@
       document.querySelector("#camera-wrap").style.display = "block";
       document.querySelector("#toggle-wrap").style.display = "none";
 
-      setTimeout(function() {
+      timeout = setTimeout(function() {
         resetCamera();
       }, 120000);
 
