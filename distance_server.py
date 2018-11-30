@@ -29,9 +29,12 @@ class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
 
 
 def main():
-    address = ('', 8001)
-    server = StreamingServer(address, StreamingHandler)
-    server.serve_forever()
+    try:
+        address = ('', 8001)
+        server = StreamingServer(address, StreamingHandler)
+        server.serve_forever()
+    finally:
+        distance_sensor.stop()
 
 
 if __name__ == '__main__':
