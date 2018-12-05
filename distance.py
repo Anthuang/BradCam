@@ -15,13 +15,17 @@ class DistanceSensor:
         # Set GPIO Pins
         self.PIN_TRIGGER = 5
         self.PIN_ECHO = 3
-        self.PIN_LED = 7
+        self.PIN_BEEPER = 7
 
         # Set GPIO direction (IN / OUT)
         GPIO.setup(self.PIN_TRIGGER, GPIO.OUT)
         GPIO.setup(self.PIN_ECHO, GPIO.IN)
-        GPIO.setup(self.PIN_LED, GPIO.OUT)
-        GPIO.output(self.PIN_LED, GPIO.LOW)
+        GPIO.setup(self.PIN_BEEPER, GPIO.OUT)
+        GPIO.output(self.PIN_BEEPER, GPIO.LOW)
+
+        self.p = GPIO.PWM(self.PIN_BEEPER, 3000)
+        self.p.start(90.0)
+        self.p.stop()
         print("Done setting up")
 
     def triggerSensor(self):
@@ -36,9 +40,9 @@ class DistanceSensor:
         if not self.beeping:
             self.beeping = True
             for _ in range(3):
-                GPIO.output(self.PIN_LED, GPIO.HIGH)
-                time.sleep(0.1)
-                GPIO.output(self.PIN_LED, GPIO.LOW)
+                self.p.start(90.0)
+                time.sleep(0.2)
+                self.p.stop()
                 time.sleep(delay)
         self.beeping = False
 
@@ -72,13 +76,13 @@ class DistanceSensor:
 
             if distance <= 50:
                 print("Within 50")
-                self.beep(0.01)
+                self.beep(0.1)
             elif distance <= 100:
                 print("Within 100")
-                self.beep(0.1)
+                self.beep(0.25)
             elif distance <= 200:
                 print("Within 200")
-                self.beep(0.25)
+                self.beep(0.75)
 
     def pause(self):
         if self.running:
